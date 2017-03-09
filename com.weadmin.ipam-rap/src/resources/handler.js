@@ -29,6 +29,7 @@
 		this._size = {width:area[2]||300,height:area[3]||300};
 		this.element.style.width = '100%';//this._size.width+"px";
 		this.element.style.height = '100%';//(this._size.height)+"px";
+		this.element.style.overflow = 'auto';
 		//this.element.style.border = '1px solid grey';
 		rap.on("render", this.onRender);
 	};
