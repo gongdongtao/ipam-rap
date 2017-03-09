@@ -82,17 +82,19 @@
 			var itemEleStr = "";
 			$.each(itemArr,function(index,itemm){
 				itemEleStr += "<div class='div2' style='background:"+itemm.color+";' title='"+itemm.ip+"'>"
-						+ "<div style='width:15px;height:15px;margin-left:33px;'>"
-						+ "<img style='width:100%;height:100%;' title='"+itemm.status+"' src='rwt-resources/ipamjs/images/"+itemm.status+".png' />"
+						+ "<div class='rightcorner'>"
+						//+ "<img style='width:100%;height:100%;' title='"+itemm.status+"' src='rwt-resources/ipamjs/images/"+itemm.status+".png' />"
 						+ "</div>"
-						+ "<div style='text-align:center'>"
-						+ "<span class='inside' style='color:#fff;font-weight:bold'>"+itemm.ip.split(".")[3]+"</span>"
+						+ "<div>"
+						+ "<span class='inside'>"+itemm.ip.split(".")[3]+"</span>"
 						+ "</div>"
 						+ "</div>";
 			});
 			var oldcolor = null;
 			$(content).append(itemEleStr);
-			$(content).find(".div2").css({"margin-left":"1px","margin-top":"1px","border":"1px solid #3d85c6","width":"50px","float":"left","height":"50px","cursor":"pointer"});
+			$(content).find(".div2").css({"text-align":"center","margin-left":"1px","margin-top":"1px","border":"1px solid #3d85c6","width":"50px","float":"left","height":"50px","cursor":"pointer"});
+			$(content).find(".div2 .rightcorner").css({"width":"15px","height":"15px","margin-left":"33px"});
+			$(content).find(".div2 .inside").css({"color":"#fff","font-weight":"bold"});
 			$(this.element).append(content);
 			$(this.element).on("mouseover",".div2",function(evt){
 				oldcolor = $(this).css("background-color");
@@ -103,7 +105,7 @@
 				oldcolor = null;
 			});
 			$(this.element).on("click",".div2",function(evt){
-				alert('IP:'+$(this).attr("title")+'---'+'status:'+$(this).find("img").attr("title"));
+				alert('IP:'+$(this).attr("title"));
 			});
 		}
 	};
