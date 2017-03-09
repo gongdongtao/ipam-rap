@@ -110,20 +110,10 @@ public class ExampleOne extends AbstractEntryPoint{
 			}
 		});
 		
-		final ScrolledComposite scrolledComposite = new ScrolledComposite(parent, SWT.H_SCROLL | SWT.V_SCROLL);
-		scrolledComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-		scrolledComposite.setAlwaysShowScrollBars(false);
-		scrolledComposite.setExpandVertical(true);
-		scrolledComposite.setExpandHorizontal(true);
-		scrolledComposite.setMinWidth(600);
-		scrolledComposite.setMinHeight(500);
-		scrolledComposite.setLayout(new GridLayout(1, false));
-		
-		IpamJs ipjs = new IpamJs(scrolledComposite, SWT.NONE);
+		IpamJs ipjs = new IpamJs(parent, SWT.NONE);
 		ipjs.setLayoutData(new GridData(GridData.FILL_BOTH));
 		JsonArray itemArr = getData();
 		ipjs.loadData(itemArr);
-		scrolledComposite.setContent(ipjs);
 		
 		refresh.addSelectionListener(new SelectionAdapter() {
 			
