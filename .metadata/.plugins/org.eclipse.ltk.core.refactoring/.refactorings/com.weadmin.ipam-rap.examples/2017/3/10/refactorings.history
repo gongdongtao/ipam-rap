@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Copy element &apos;ExampleOne.java&apos; to &apos;com.weadmin.ipam-rap.example/src/com.weadmin.ipam_rap.example&apos;&#x0D;&#x0A;- Original project: &apos;com.weadmin.ipam-rap.examples&apos;&#x0D;&#x0A;- Destination element: &apos;com.weadmin.ipam-rap.example/src/com.weadmin.ipam_rap.example&apos;&#x0D;&#x0A;- Original element: &apos;com.weadmin.ipam_rap.example.ExampleOne.java&apos;" description="Copy compilation unit" destination="=com.weadmin.ipam-rap.example/src&lt;com.weadmin.ipam_rap.example" element1="/src&lt;com.weadmin.ipam_rap.example{ExampleOne.java" files="0" flags="589830" folders="0" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyResources" stamp="1488848828570" units="1" version="1.0"/>
+</session>

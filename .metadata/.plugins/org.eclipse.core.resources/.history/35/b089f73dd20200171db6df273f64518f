@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Ipam-rap
+Bundle-SymbolicName: com.weadmin.ipam-rap
+Bundle-Version: 1.0.0.qualifier
+Bundle-Vendor: WEADMIN
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
