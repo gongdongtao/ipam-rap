@@ -5,9 +5,9 @@
 			return new eclipsesource.ipamjs(properties);
 		},
 		destructor : "destroy",
-		methods : ["loadData"],
+		methods : ["loadData","refresh"],
 		properties : [ "size"],
-		events:[]
+		events : ["Selection"]
 	});
 
 	if (!window.eclipsesource) {
@@ -31,6 +31,7 @@
 		this.element.style.height = '100%';//(this._size.height)+"px";
 		this.element.style.overflow = 'auto';
 		//this.element.style.border = '1px solid grey';
+		this._content;
 		rap.on("render", this.onRender);
 	};
 	eclipsesource.ipamjs.prototype = {
@@ -76,7 +77,9 @@
 		},
 		
 		loadData : function(obj){
-			var content = document.createElement("div");
+			var ro = rap.getRemoteObject(this);
+			this._content = document.createElement("div");
+			var content = this._content;
 			$(content).css({"overflow":"hidden"});
 			var itemArr = obj.array;
 			var itemEleStr = "";
@@ -86,29 +89,43 @@
 						//+ "<img style='width:100%;height:100%;' title='"+itemm.status+"' src='rwt-resources/ipamjs/images/"+itemm.status+".png' />"
 						+ "</div>"
 						+ "<div>"
-						+ "<span class='inside'>"+itemm.ip.split(".")[3]+"</span>"
+						+ "<span class='inside'>."+itemm.ip.split(".")[3]+"</span>"
+						+ "<span class='otherAttr mac'>"+itemm.mac+"</span>"
+						+ "<span class='otherAttr department'>"+itemm.department+"</span>"
 						+ "</div>"
 						+ "</div>";
 			});
 			var oldcolor = null;
 			$(content).append(itemEleStr);
-			$(content).find(".div2").css({"text-align":"center","margin-left":"1px","margin-top":"1px","border":"1px solid #3d85c6","width":"50px","float":"left","height":"50px","cursor":"pointer"});
+			$(content).find(".div2").css({"text-align":"center","margin-left":"2px","margin-top":"2px","border":"1px solid #3d85c6","width":"50px","float":"left","height":"50px","cursor":"pointer"});
 			$(content).find(".div2 .rightcorner").css({"width":"15px","height":"15px","margin-left":"33px"});
 			$(content).find(".div2 .inside").css({"color":"#fff","font-weight":"bold"});
+			$(content).find(".div2 .otherAttr").css({"display":"none"});
 			$(this.element).append(content);
-			$(this.element).on("mouseover",".div2",function(evt){
+			$(content).on("mouseover",".div2",function(evt){
 				oldcolor = $(this).css("background-color");
 				$(this).css("background-color","#0c343d");
 			});
-			$(this.element).on("mouseout",".div2",function(evt){
+			$(content).on("mouseout",".div2",function(evt){
 				$(this).css("background-color",oldcolor);
 				oldcolor = null;
 			});
-			$(this.element).on("click",".div2",function(evt){
-				alert('IP:'+$(this).attr("title"));
+			$(content).on("click",".div2",function(evt){
+				ro.notify('Selection', {
+					ip : $(this).attr("title"),
+					mac : $(this).find(".mac").text(),
+					department : $(this).find(".department").text()
+				});
 			});
+		},
+		
+		refresh : function(obj){
+			$(this.element).children().off().empty();
+			this.loadData(obj);
 		}
 	};
+	
+	
 
 	var bind = function(context, method) {
 		return function() {

@@ -1,5 +1,7 @@
 package com.weadmin.ipam_rap.example;
 
+import java.nio.channels.NonWritableChannelException;
+
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.rap.json.JsonArray;
@@ -16,7 +18,10 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Listener;
+
 import com.weadmin.ipam_rap.*;
 
 public class ExampleOne extends AbstractEntryPoint{
@@ -112,8 +117,20 @@ public class ExampleOne extends AbstractEntryPoint{
 		
 		IpamJs ipjs = new IpamJs(parent, SWT.NONE);
 		ipjs.setLayoutData(new GridData(GridData.FILL_BOTH));
-		JsonArray itemArr = getData();
-		ipjs.loadData(itemArr);
+		ipjs.loadData(getData());
+		ipjs.addListener(SWT.Selection, new Listener() {
+			
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void handleEvent(Event event) {
+				JsonObject parameters = (JsonObject) event.data;
+				System.out.println("IP:"+parameters.get("ip").asString()
+						+"\nMac:"+parameters.get("mac").asString()
+						+"\nDepartment:"+parameters.get("department").asString()
+						+"\n------------------");
+			}
+		});
 		
 		refresh.addSelectionListener(new SelectionAdapter() {
 			
@@ -121,7 +138,7 @@ public class ExampleOne extends AbstractEntryPoint{
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				
+				ipjs.refresh(getData());
 			}
 		});
 	}
@@ -141,6 +158,8 @@ public class ExampleOne extends AbstractEntryPoint{
 				item.add("status", status[(int) (Math.random()*3)]);
 			}
 			item.add("ip", "192.168.10."+(i+1));
+			item.add("mac", "5465656565");
+			item.add("department", "kaifa");
 			itemArr.add(item);
 		}
 		return itemArr;

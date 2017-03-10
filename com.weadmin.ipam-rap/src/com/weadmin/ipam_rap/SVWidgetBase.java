@@ -12,11 +12,13 @@ import org.eclipse.rap.rwt.remote.OperationHandler;
 import org.eclipse.rap.rwt.remote.RemoteObject;
 import org.eclipse.rap.rwt.service.ResourceManager;
 import org.eclipse.rap.rwt.widgets.WidgetUtil;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Layout;
+import org.eclipse.swt.widgets.Listener;
 
 
 public abstract class SVWidgetBase extends Composite {
@@ -53,7 +55,7 @@ public abstract class SVWidgetBase extends Composite {
 
 	private ArrayList<CustomRes> resources;
 
-	private final RemoteObject remoteObject;
+	protected final RemoteObject remoteObject;
 
 	private final OperationHandler operationHandler = new AbstractOperationHandler() {
 		
@@ -74,8 +76,6 @@ public abstract class SVWidgetBase extends Composite {
 			handleCallNotify(event,properties);
 		}
 	};
-
-
 
 	protected abstract void handleSetProp(JsonObject properties);
 	protected abstract void handleCallMethod(String method, JsonObject parameters);
@@ -105,8 +105,7 @@ public abstract class SVWidgetBase extends Composite {
 	protected void callRemoteMethod(String name,JsonObject parameters){
 		remoteObject.call(name, parameters);
 	}
-
-
+	
 	private String getRemoteName(){
 		return "eclipsesource."+ getWidgetName();
 	}
@@ -193,8 +192,7 @@ public abstract class SVWidgetBase extends Composite {
 			inputStream.close();
 		}
 	}
-
-
+	
 	////////////////////
 	// overwrite methods
 
@@ -207,6 +205,26 @@ public abstract class SVWidgetBase extends Composite {
 	public void dispose() {
 		remoteObject.destroy();
 		super.dispose();
+	}
+	
+	@Override
+	public void addListener( int eventType, Listener listener ) {
+		boolean wasListening = isListening( SWT.Selection );
+		super.addListener( eventType, listener );
+		if( eventType == SWT.Selection && !wasListening ) {
+			remoteObject.listen( "Selection", true );
+		}
+	}
+
+	@Override
+	public void removeListener( int eventType, Listener listener ) {
+		boolean wasListening = isListening( SWT.Selection );
+		super.removeListener( eventType, listener );
+		if( eventType == SWT.Selection && wasListening ) {
+			if( !isListening( SWT.Selection ) ) {
+				remoteObject.listen( "Selection", false );
+			}
+		}
 	}
 
 }
